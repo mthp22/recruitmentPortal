@@ -6,9 +6,12 @@ final class Config
 {
     public static function app(): array
     {
+        $baseUrl = self::env('APP_BASE_URL', self::detectBaseUrl());
+
         return [
             'name' => 'Job Application Portal',
-            'base_url' => self::env('APP_BASE_URL', '/public'),
+            'base_url' => $baseUrl,
+            'asset_url' => rtrim($baseUrl, '/') . '/public',
             'timezone' => self::env('APP_TIMEZONE', 'Africa/Johannesburg'),
         ];
     }
@@ -49,5 +52,17 @@ final class Config
         $value = $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key);
 
         return is_string($value) && $value !== '' ? $value : $default;
+    }
+
+    private static function detectBaseUrl(): string
+    {
+        $scriptName = (string) ($_SERVER['SCRIPT_NAME'] ?? '');
+        $directory = str_replace('\\', '/', dirname($scriptName));
+
+        if ($directory === '/' || $directory === '.' || $directory === '') {
+            return '';
+        }
+
+        return rtrim($directory, '/');
     }
 }
