@@ -1,0 +1,17 @@
+body {
+    min-height: 100vh;
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+.form-control[readonly],
+.form-select:disabled {
+    background-color: #eef2f7;
+}
+
+.table td,
+.table th {
+    white-space: nowrap;
+}
