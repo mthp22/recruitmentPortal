@@ -1,0 +1,4 @@
+/vendor/
+/uploads/cvs/*
+!/uploads/cvs/.gitkeep
+.env
