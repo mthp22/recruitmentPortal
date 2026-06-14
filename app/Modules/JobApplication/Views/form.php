@@ -46,7 +46,6 @@ $currentCv = $application->cvFilename;
     enctype="multipart/form-data"
     action="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>/index.php?module=jobapplication&action=save"
     data-ajax-url="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>/ajax.php"
-    data-module-ajax-url="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>/jobapplication_ajax.php"
     data-view-url="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>/index.php?module=jobapplication&action=view"
 >
     <div class="card-body p-4">
@@ -223,4 +222,4 @@ $currentCv = $application->cvFilename;
     </div>
 </form>
 
-<script src="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>/assets/js/jobapplication.js"></script>
+<script src="<?= htmlspecialchars(\App\Core\Config::app()['asset_url'], ENT_QUOTES, 'UTF-8') ?>/assets/js/jobapplication.js"></script>

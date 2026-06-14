@@ -3,9 +3,8 @@ class JobApplicationForm {
         this.form = form;
         this.alert = document.getElementById('job-application-alert');
         this.cancelButton = this.form.querySelector('[data-cancel-url]');
-        this.endpoint = this.form.dataset.ajaxUrl || '/public/ajax.php';
-        this.moduleEndpoint = this.form.dataset.moduleAjaxUrl || '/public/jobapplication_ajax.php';
-        this.viewUrl = this.form.dataset.viewUrl || '/public/index.php?module=jobapplication&action=view';
+        this.endpoint = this.form.dataset.ajaxUrl || '/ajax.php';
+        this.viewUrl = this.form.dataset.viewUrl || '/index.php?module=jobapplication&action=view';
         this.bindEvents();
     }
 
@@ -66,7 +65,7 @@ class JobApplicationForm {
         formData.set('id', idField ? idField.value : '');
 
         try {
-            const response = await fetch(this.moduleEndpoint, {
+            const response = await fetch(this.endpoint, {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
