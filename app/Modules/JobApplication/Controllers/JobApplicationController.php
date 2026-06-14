@@ -9,7 +9,7 @@ use App\Modules\JobApplication\Services\JobApplicationService;
 
 final class JobApplicationController extends Controller
 {
-    private JobApplicationService $service;
+    private ?JobApplicationService $service = null;
 
     public function __construct(
         \App\Core\Request $request,
@@ -17,13 +17,12 @@ final class JobApplicationController extends Controller
         \App\Core\View $view
     ) {
         parent::__construct($request, $response, $view);
-        $this->service = JobApplicationService::make();
     }
 
     public function view(): void
     {
         $id = (int) $this->request->get('id', 0);
-        $application = $id > 0 ? $this->service->find($id) : new JobApplication();
+        $application = $id > 0 ? $this->service()->find($id) : new JobApplication();
         $mode = $id > 0 ? 'view' : 'create';
 
         $this->render('Modules/JobApplication/Views/form', [
@@ -39,7 +38,7 @@ final class JobApplicationController extends Controller
     public function edit(): void
     {
         $id = (int) $this->request->get('id', 0);
-        $application = $this->service->find($id);
+        $application = $this->service()->find($id);
 
         if ($application === null) {
             $this->render('Modules/JobApplication/Views/form', [
@@ -66,7 +65,7 @@ final class JobApplicationController extends Controller
 
     public function save(): void
     {
-        $result = $this->service->save($this->request->all(), $this->request->file('cv_filename'));
+        $result = $this->service()->save($this->request->all(), $this->request->file('cv_filename'));
 
         if ($this->request->isAjax()) {
             $this->json($result, $result['success'] ? 200 : 422);
@@ -116,7 +115,7 @@ final class JobApplicationController extends Controller
     {
         $this->render('Modules/JobApplication/Views/list', [
             'title' => 'Applications',
-            'applications' => $this->service->all(),
+            'applications' => $this->service()->all(),
             'baseUrl' => Config::app()['base_url'],
         ]);
     }
@@ -142,5 +141,16 @@ final class JobApplicationController extends Controller
             'message' => 'Unsupported AJAX action.',
             'errors' => [],
         ], 400);
+    }
+
+    private function service(): JobApplicationService
+    {
+        if ($this->service instanceof JobApplicationService) {
+            return $this->service;
+        }
+
+        $this->service = JobApplicationService::make();
+
+        return $this->service;
     }
 }
